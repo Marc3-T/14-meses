@@ -4,7 +4,201 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>11 Meses Juntos ❤️</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+            background: linear-gradient(135deg, #ffd1dc 0%, #f8c8dc 100%);
+            color: #8a4b76;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 100%;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+
+        .screen {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        /* Pantalla de bienvenida */
+        #welcome-screen {
+            text-align: center;
+            padding-top: 15vh;
+        }
+
+        .heart {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            color: #d1478b;
+        }
+
+        .counter {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin: 2rem 0;
+            color: #d1478b;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            color: #8a4b76;
+        }
+
+        button {
+            background: rgba(255, 255, 255, 0.5);
+            border: 2px solid #d1478b;
+            color: #d1478b;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        button:hover {
+            background: rgba(209, 71, 139, 0.2);
+            transform: scale(1.05);
+        }
+
+        /* Pantalla de recuerdos */
+        #memories-screen {
+            padding-top: 50px;
+        }
+
+        .back-button {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            cursor: pointer;
+            display: inline-block;
+            color: #d1478b;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            color: #d1478b;
+        }
+
+        .memory-card {
+            background: rgba(255, 255, 255, 0.5);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .memory-card.current {
+            background: rgba(255, 255, 255, 0.7);
+            border: 2px solid rgba(209, 71, 139, 0.3);
+        }
+
+        .memory-date {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: #d1478b;
+        }
+
+        .memory-text {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .photo-gallery {
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .photo-placeholder {
+            background: rgba(255, 255, 255, 0.5);
+            padding: 40px 20px;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            opacity: 0.7;
+            border: 2px dashed rgba(209, 71, 139, 0.3);
+        }
+
+        /* Mensaje flotante */
+        .floating-message {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 10px 20px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            animation: float 3s ease-in-out infinite;
+            color: #d1478b;
+            font-weight: 600;
+            border: 1px solid rgba(209, 71, 139, 0.2);
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Ajustes para iPhone */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .counter {
+                font-size: 2.8rem;
+            }
+            
+            .heart {
+                font-size: 3rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -48,7 +242,7 @@
             </div>
             
             <div class="photo-gallery">
-                <div class="photo-placeholder">📸 (Aquí puedes agregar fotas)</div>
+                <div class="photo-placeholder">📸 (Aquí puedes agregar fotos)</div>
             </div>
         </div>
 
@@ -58,6 +252,60 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        function showMemories() {
+            document.getElementById('welcome-screen').classList.remove('active');
+            document.getElementById('memories-screen').classList.add('active');
+        }
+
+        function showWelcome() {
+            document.getElementById('memories-screen').classList.remove('active');
+            document.getElementById('welcome-screen').classList.add('active');
+        }
+
+        // Efectos adicionales para hacerlo más especial
+        document.addEventListener('DOMContentLoaded', function() {
+            // Agregar confeti al hacer clic
+            document.body.addEventListener('click', function(e) {
+                createConfetti(e.clientX, e.clientY);
+            });
+        });
+
+        function createConfetti(x, y) {
+            for (let i = 0; i < 10; i++) {
+                const confetti = document.createElement('div');
+                confetti.innerHTML = ['❤️', '💖', '✨', '🌟', '💫'][Math.floor(Math.random() * 5)];
+                confetti.style.position = 'fixed';
+                confetti.style.left = x + 'px';
+                confetti.style.top = y + 'px';
+                confetti.style.fontSize = '20px';
+                confetti.style.pointerEvents = 'none';
+                confetti.style.zIndex = '1000';
+                confetti.style.animation = `confettiFall ${Math.random() * 2 + 1}s ease-in forwards`;
+                
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 2000);
+            }
+        }
+
+        // Agregar estilo para el confeti
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes confettiFall {
+                0% {
+                    transform: translate(0, 0) rotate(0deg);
+                    opacity: 1;
+                }
+                100% {
+                    transform: translate(${Math.random() * 200 - 100}px, 200px) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
 </html>
